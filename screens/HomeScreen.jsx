@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Image, Alert } from "react-native";
 import styled from "styled-components/native";
 import { FilterButtons } from "../components/FilterButtons";
 import { ProductList } from "../components/home/ProductList";
 import { useGetProductsQuery } from "../redux/api/productsApi";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, incrementProductCount } from "../redux/slices/cartSlice";
+import * as Location from 'expo-location';
 
 const HomeContainer = styled.View`
   width: 100%;
@@ -61,9 +62,64 @@ const searchingIcon = require("../assets/img/searching.png");
 export const Home = ({ navigation }) => {
   const [currentFilter, setCurrentFilter] = useState("");
   const [searchingProduct, setSearchingProduct] = useState("");
+
   const { data, error, isLoading } = useGetProductsQuery();
+
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cart.products);
+
+  const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
+  const [displayCurrentAddress, setDisplayCurrentAddress] = useState(
+    'Wait, we are fetching you location...'
+  );
+
+  useEffect(() => {
+    checkLocationEnabled();
+    getCurrentLocation();
+  }, []);
+
+  const checkLocationEnabled = async () => {
+    let enabled = await Location.hasServicesEnabledAsync();
+    console.log(enabled);
+    if (!enabled) {
+      Alert.alert(
+        'Location Service not enabled',
+        'Please enable your location services to continue',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    } else {
+      setLocationServiceEnabled(enabled);
+    }
+  };
+
+  const getCurrentLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+  
+    if (status !== 'granted') {
+      Alert.alert(
+        'Permission not granted',
+        'Allow the app to use location service.',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    }
+  
+    let { coords } = await Location.getCurrentPositionAsync();
+  
+    if (coords) {
+      const { latitude, longitude } = coords;
+      let response = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude
+      });
+      console.log(response);
+      for (let item of response) {
+        let address = `${item.name}, ${item.street}, ${item.postalCode}, ${item.city}`;
+        setDisplayCurrentAddress(address);
+      }
+    }
+  };
 
   const getProducts = () => {
     let products = currentFilter

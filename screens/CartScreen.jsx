@@ -21,7 +21,7 @@ const CartBackButton = styled.Pressable`
 const CartName = styled.Text`
   font-size: 20px;
   line-height: 26px;
-  font-weight: 500;
+  font-family: "DM-Sans-Medium";
   position: absolute;
   left: 96px;
   top: 36px;
@@ -34,9 +34,9 @@ const CartEmptyContainer = styled.View`
 `;
 
 const CartEmptyText = styled.Text`
-  font-weight: 500;
   font-size: 20px;
   line-height: 26px;
+  font-family: "DM-Sans-Medium";
 `;
 
 const PaymentBlock = styled.View`
@@ -92,6 +92,7 @@ export const Cart = ({ navigation }) => {
   const products = useSelector((state) => state.cart.products);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const dispatch = useDispatch();
+  
   const removeProductFromCart = (id) => {
     dispatch(removeProduct(id));
   };
