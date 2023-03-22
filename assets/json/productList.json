@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Eggs",
+    "weight": 500,
+    "price": 80,
+    "energy": 550,
+    "description": "Good product",
+    "image": "https://www.pngmart.com/files/5/Eggs-PNG-File.png",
+    "type": "Dairy products"
+  },
+  {
+    "id": 2,
+    "name": "Cucumbers",
+    "weight": 1000,
+    "price": 150,
+    "energy": 250,
+    "description": "Good product",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTruiDIW2rBqKITZWUIFPSQtwEhb4yGzV7vBg&usqp=CAU",
+    "type": "Vegetables"
+  },
+  {
+    "id": 3,
+    "name": "Milk",
+    "weight": 1000,
+    "price": 100,
+    "energy": 70,
+    "description": "Good product",
+    "image": "https://i5.walmartimages.com/asr/b8cd5dd9-eb4c-44f8-84c5-6c3fa0ade504_2.b93305e90bf7f66b9ab5f36f25652660.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+    "type": "Dairy products"
+  },
+  {
+    "id": 4,
+    "name": "Tomatoes",
+    "weight": 1000,
+    "price": 350,
+    "energy": 450,
+    "description": "Good product",
+    "image": "https://freepngimg.com/thumb/tomato/159306-fresh-photos-tomatoes-bunch-free-photo.png",
+    "type": "Vegetables"
+  },
+  {
+    "id": 5,
+    "name": "Cake",
+    "weight": 70,
+    "price": 120,
+    "energy": 150,
+    "description": "Good product",
+    "image": "https://www.freepnglogos.com/uploads/cake-png/cake-png-photos-the-patisserie-1.png",
+    "type": "Pastry"
+  }
+]
