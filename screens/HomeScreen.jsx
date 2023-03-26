@@ -7,7 +7,7 @@ import { ProductList } from "../components/home/ProductList";
 import { useGetProductsQuery } from "../redux/api/productsApi";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, incrementProductCount } from "../redux/slices/cartSlice";
-import { updateLocation } from "../redux/slices/userSlice";
+import { updateLocation, updateLoadingLocation } from "../redux/slices/userSlice";
 
 const HomeContainer = styled.View`
   width: 100%;
@@ -122,7 +122,6 @@ export const Home = ({ navigation }) => {
   const getCurrentLocation = async () => {
     try {
       let { status } = await Location.requestForegroundPermissionsAsync();
-
       if (status !== "granted") {
         Alert.alert(
           "Permission not granted",
@@ -133,7 +132,6 @@ export const Home = ({ navigation }) => {
         dispatch(updateLoadingLocation(false));
       }
       let { coords } = await Location.getCurrentPositionAsync();
-
       if (coords) {
         const { latitude, longitude } = coords;
         let response = await Location.reverseGeocodeAsync({
