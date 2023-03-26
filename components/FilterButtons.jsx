@@ -31,14 +31,17 @@ const filters = [
   {
     text: "🥐 Pastry",
     type: "Pastry",
+    id: 1,
   },
   {
     text: "🧀 Dairy products",
     type: "Dairy products",
+    id: 2,
   },
   {
     text: "🥦 Vegetables",
     type: "Vegetables",
+    id: 3,
   },
 ];
 
@@ -49,11 +52,11 @@ export const FilterButtons = ({ currentFilter, setCurrentFilter }) => {
         {filters.map((element) => (
           <FilterButton
             style={currentFilter === element.type && currentFilterButtonStyled}
-            onPress={() => { 
+            onPress={() => {
               if (currentFilter === element.type) {
-                setCurrentFilter("")
+                setCurrentFilter("");
               } else {
-                setCurrentFilter(element.type)
+                setCurrentFilter(element.type);
               }
             }}
             key={element.id}

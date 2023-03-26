@@ -2,7 +2,11 @@ import React from "react";
 import { Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
-import { removeProduct, decrementProductCount, incrementProductCount } from "../redux/slices/cartSlice";
+import {
+  removeProduct,
+  decrementProductCount,
+  incrementProductCount,
+} from "../redux/slices/cartSlice";
 import { CartProductList } from "../components/cart/CartProductList";
 
 const CartContainer = styled.View`
@@ -91,21 +95,22 @@ const locationIcon = require("../assets/img/location_icon.png");
 export const Cart = ({ navigation }) => {
   const products = useSelector((state) => state.cart.products);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const location = useSelector((state) => state.user.location);
   const dispatch = useDispatch();
-  
+
   const removeProductFromCart = (id) => {
     dispatch(removeProduct(id));
   };
 
   const decrementProduct = (product) => {
     if (product.count > 1) {
-      dispatch(decrementProductCount({id: product.id, count: 1}));
+      dispatch(decrementProductCount({ id: product.id, count: 1 }));
     }
-  }
+  };
 
   const incrementProduct = (product) => {
-    dispatch(incrementProductCount({id: product.id, count: 1}));
-  }
+    dispatch(incrementProductCount({ id: product.id, count: 1 }));
+  };
 
   const emptyCart = (
     <CartEmptyContainer>
@@ -117,10 +122,14 @@ export const Cart = ({ navigation }) => {
     <PaymentBlock>
       <PaymentTitle>Total amount: {totalAmount}₽</PaymentTitle>
       <PaymentAddressBlock>
-        <Image source={locationIcon} />
-        <PaymentAddress>154 Pushkina street, Samara, Russia</PaymentAddress>
+        {location && (
+          <>
+            <Image source={locationIcon} />
+            <PaymentAddress>{location}</PaymentAddress>
+          </>
+        )}
       </PaymentAddressBlock>
-      <SubmitButton>
+      <SubmitButton style={{ zIndex: 0.5 }} onPress={() => navigation.navigate("Login/Register")}>
         <SubmitText>Buy</SubmitText>
       </SubmitButton>
     </PaymentBlock>
@@ -140,7 +149,10 @@ export const Cart = ({ navigation }) => {
 
   return (
     <CartContainer>
-      <CartBackButton onPress={() => navigation.navigate("Home")}>
+      <CartBackButton
+        style={{ zIndex: 0.5 }}
+        onPress={() => navigation.navigate("Home")}
+      >
         <Image source={backButton} />
       </CartBackButton>
       <CartName>Cart</CartName>

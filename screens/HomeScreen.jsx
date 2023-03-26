@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Image, Alert } from "react-native";
+import * as Location from "expo-location";
 import styled from "styled-components/native";
 import { FilterButtons } from "../components/FilterButtons";
 import { ProductList } from "../components/home/ProductList";
 import { useGetProductsQuery } from "../redux/api/productsApi";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, incrementProductCount } from "../redux/slices/cartSlice";
-import * as Location from 'expo-location';
+import { updateLocation } from "../redux/slices/userSlice";
 
 const HomeContainer = styled.View`
   width: 100%;
@@ -16,17 +17,34 @@ const HomeContainer = styled.View`
 `;
 
 const HeaderContainer = styled.View`
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
+  flex-direction: column;
   padding: 0 32px;
-  padding-top: 48px;
+`;
+
+const HeaderFirstBlock = styled.View`
+  width: 100%;
+  padding-top: 36px;
+  padding-bottom: 8px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const HeaderSecondBlock = styled.View`
+  flex-direction: row;
+`;
+
+const HeaderLocation = styled.Text`
+  font-size: 16px;
+  line-height: 19px;
+  padding-left: 4px;
+  padding-top: 2px;
+  font-family: "DM-Sans-Medium";
 `;
 
 const HeaderTitle = styled.Text`
   color: #0d0d0d;
-  font-weight: 500;
   font-size: 28px;
+  font-family: "DM-Sans-Medium";
   line-height: 33px;
   flex-shrink: 1;
 `;
@@ -58,6 +76,7 @@ const SearchingIcon = styled.Image`
 
 const deliverHomeImg = require("../assets/img/deliver_home.png");
 const searchingIcon = require("../assets/img/searching.png");
+const homeLocationIcon = require("../assets/img/home_location_icon.png");
 
 export const Home = ({ navigation }) => {
   const [currentFilter, setCurrentFilter] = useState("");
@@ -67,11 +86,7 @@ export const Home = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cart.products);
-
-  const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
-  const [displayCurrentAddress, setDisplayCurrentAddress] = useState(
-    'Wait, we are fetching you location...'
-  );
+  const location = useSelector((state) => state.user.location);
 
   useEffect(() => {
     checkLocationEnabled();
@@ -80,33 +95,30 @@ export const Home = ({ navigation }) => {
 
   const checkLocationEnabled = async () => {
     let enabled = await Location.hasServicesEnabledAsync();
-    console.log(enabled);
-    if (!enabled) {
-      Alert.alert(
+      if (!enabled) {
+        Alert.alert(
         'Location Service not enabled',
         'Please enable your location services to continue',
         [{ text: 'OK' }],
-        { cancelable: false }
-      );
-    } else {
-      setLocationServiceEnabled(enabled);
+          { cancelable: false }
+        );
     }
   };
 
   const getCurrentLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
-  
+
     if (status !== 'granted') {
-      Alert.alert(
+        Alert.alert(
         'Permission not granted',
         'Allow the app to use location service.',
         [{ text: 'OK' }],
-        { cancelable: false }
-      );
-    }
-  
+          { cancelable: false }
+        );
+      }
+
     let { coords } = await Location.getCurrentPositionAsync();
-  
+
     if (coords) {
       const { latitude, longitude } = coords;
       let response = await Location.reverseGeocodeAsync({
@@ -116,8 +128,8 @@ export const Home = ({ navigation }) => {
       console.log(response);
       for (let item of response) {
         let address = `${item.name}, ${item.street}, ${item.postalCode}, ${item.city}`;
-        setDisplayCurrentAddress(address);
-      }
+        dispatch(updateLocation(address));
+    }
     }
   };
 
@@ -138,13 +150,9 @@ export const Home = ({ navigation }) => {
   };
 
   const addProductToCart = (item) => {
-    const checkItem = cartProducts.some(product => product.id === item.id)
-    if (
-      cartProducts &&
-      cartProducts.length > 0 &&
-      checkItem
-    ) {
-      dispatch(incrementProductCount({id: item.id, count: 1}));
+    const checkItem = cartProducts.some((product) => product.id === item.id);
+    if (cartProducts && cartProducts.length > 0 && checkItem) {
+      dispatch(incrementProductCount({ id: item.id, count: 1 }));
     } else {
       const cartProduct = {
         id: item.id,
@@ -160,8 +168,18 @@ export const Home = ({ navigation }) => {
   return (
     <HomeContainer>
       <HeaderContainer>
-        <HeaderTitle>Order Your Products Fast and Free</HeaderTitle>
-        <Image source={deliverHomeImg} />
+        <HeaderFirstBlock>
+          {location && (
+            <>
+              <Image source={homeLocationIcon} />
+              <HeaderLocation>{location}</HeaderLocation>
+            </>
+          )}
+        </HeaderFirstBlock>
+        <HeaderSecondBlock>
+          <HeaderTitle>Order Your Products Fast and Free</HeaderTitle>
+          <Image source={deliverHomeImg} />
+        </HeaderSecondBlock>
       </HeaderContainer>
       <SearchingContainer>
         <SearchingInput

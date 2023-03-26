@@ -8,6 +8,7 @@ import { Cart } from "../screens/CartScreen";
 import { Start } from "../screens/StartScreen";
 import { Account } from "../screens/AccountScreen";
 import { useSelector } from "react-redux";
+import { LoginRegisterScreen } from "../screens/LoginRegisterScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -38,6 +39,14 @@ export const Navigation = () => {
           }}
           name="Start"
           component={Start}
+        />
+        <Tab.Screen
+          options={{
+            tabBarStyle: { display: "none" },
+            tabBarButton: () => null,
+          }}
+          name="Login/Register"
+          component={LoginRegisterScreen}
         />
         <Tab.Screen
           name="Home"
