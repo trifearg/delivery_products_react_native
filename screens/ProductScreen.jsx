@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { Pressable, Image } from "react-native";
+import { Pressable, Image, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
 import { addProduct, incrementProductCount } from "../redux/slices/cartSlice";
 
-const ProductContainer = styled.View`
+const ProductContainer = styled.ScrollView`
   width: 100%;
   height: 100%;
   background-color: #fff1e5;
   flex-direction: column;
-  align-items: center;
   position: relative;
 `;
 
@@ -150,7 +149,7 @@ export const Product = ({ route, navigation }) => {
   }
 
   return (
-    <ProductContainer>
+    <ProductContainer contentContainerStyle={styles.center}>
       <ProductBackButton onPress={() => navigation.navigate("Home")}>
         <Image source={backButton} />
       </ProductBackButton>
@@ -206,3 +205,9 @@ export const Product = ({ route, navigation }) => {
     </ProductContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  center: {
+    alignItems: "center",
+  },
+});

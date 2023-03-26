@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image, Alert } from "react-native";
+import { Image, Alert, ActivityIndicator } from "react-native";
 import * as Location from "expo-location";
 import styled from "styled-components/native";
 import { FilterButtons } from "../components/FilterButtons";
@@ -74,6 +74,12 @@ const SearchingIcon = styled.Image`
   top: 12px;
 `;
 
+const LoadingContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
 const deliverHomeImg = require("../assets/img/deliver_home.png");
 const searchingIcon = require("../assets/img/searching.png");
 const homeLocationIcon = require("../assets/img/home_location_icon.png");
@@ -87,6 +93,9 @@ export const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cart.products);
   const location = useSelector((state) => state.user.location);
+  const isLoadingLocation = useSelector(
+    (state) => state.user.isLoadingLocation
+  );
 
   useEffect(() => {
     checkLocationEnabled();
@@ -94,42 +103,51 @@ export const Home = ({ navigation }) => {
   }, []);
 
   const checkLocationEnabled = async () => {
-    let enabled = await Location.hasServicesEnabledAsync();
+    try {
+      let enabled = await Location.hasServicesEnabledAsync();
       if (!enabled) {
         Alert.alert(
-        'Location Service not enabled',
-        'Please enable your location services to continue',
-        [{ text: 'OK' }],
+          "Location Service not enabled",
+          "Please enable your location services to continue",
+          [{ text: "OK" }],
           { cancelable: false }
         );
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+      dispatch(updateLoadingLocation(false));
     }
   };
 
   const getCurrentLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
 
-    if (status !== 'granted') {
+      if (status !== "granted") {
         Alert.alert(
-        'Permission not granted',
-        'Allow the app to use location service.',
-        [{ text: 'OK' }],
+          "Permission not granted",
+          "Allow the app to use location service.",
+          [{ text: "OK" }],
           { cancelable: false }
         );
+        dispatch(updateLoadingLocation(false));
       }
+      let { coords } = await Location.getCurrentPositionAsync();
 
-    let { coords } = await Location.getCurrentPositionAsync();
-
-    if (coords) {
-      const { latitude, longitude } = coords;
-      let response = await Location.reverseGeocodeAsync({
-        latitude,
-        longitude
-      });
-      console.log(response);
-      for (let item of response) {
-        let address = `${item.name}, ${item.street}, ${item.postalCode}, ${item.city}`;
-        dispatch(updateLocation(address));
-    }
+      if (coords) {
+        const { latitude, longitude } = coords;
+        let response = await Location.reverseGeocodeAsync({
+          latitude,
+          longitude,
+        });
+        for (let item of response) {
+          let address = `${item.name}, ${item.street}, ${item.postalCode}, ${item.city}`;
+          dispatch(updateLocation(address));
+        }
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+      dispatch(updateLoadingLocation(false));
     }
   };
 
@@ -167,6 +185,11 @@ export const Home = ({ navigation }) => {
 
   return (
     <HomeContainer>
+      {isLoadingLocation && (
+        <LoadingContainer>
+          <ActivityIndicator size="large" color="#f00808" />
+        </LoadingContainer>
+      )}
       <HeaderContainer>
         <HeaderFirstBlock>
           {location && (

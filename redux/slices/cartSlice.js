@@ -30,7 +30,6 @@ export const cartSlice = createSlice({
       };
     },
     incrementProductCount: (state, action) => {
-      console.log(action.payload)
       const foundIndex = state.products.findIndex(product => product.id === action.payload.id);
       state.products[foundIndex].count += action.payload.count;
       state.totalAmount += state.products[foundIndex].price;
