@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: './data.db'
+    storage: 'src/data.db'
 });
 
 sequelize.authenticate()
