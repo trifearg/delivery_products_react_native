@@ -3,6 +3,7 @@ import { Pressable, Image, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
 import { addProduct, incrementProductCount } from "../redux/slices/cartSlice";
+import i18n from "../assets/translations/i18n";
 
 const ProductContainer = styled.ScrollView`
   width: 100%;
@@ -74,7 +75,7 @@ const ProductEnergyContainer = styled.View`
   padding: 8px;
   border: 1px solid #a0007d;
   border-radius: 10px;
-  width: 120px;
+  max-width: 200px;
   margin-top: 32px;
 `;
 
@@ -144,7 +145,7 @@ export const Product = ({ route, navigation }) => {
 
   const decrementProductCounter = () => {
     if (countProduct > 1) {
-      setCountProduct(prev => prev -1);
+      setCountProduct(prev => prev - 1);
     }
   }
 
@@ -169,11 +170,11 @@ export const Product = ({ route, navigation }) => {
           </ProductButtonsContainer>
         </ProductPriceContainer>
         <ProductEnergyContainer>
-          <ProductEnergyTitle>Energy</ProductEnergyTitle>
-          <ProductEnergy>{energy} KCal</ProductEnergy>
+          <ProductEnergyTitle>{i18n.t('productScreen.productEnergyTitle')}</ProductEnergyTitle>
+          <ProductEnergy>{`${energy} ${i18n.t('productScreen.productEnergy')}`}</ProductEnergy>
         </ProductEnergyContainer>
         <ProductDesriptionContainer>
-          <ProductDesriptionTitle>About{"\n"}</ProductDesriptionTitle>
+          <ProductDesriptionTitle>{i18n.t('productScreen.productDesriptionTitle')}{"\n"}</ProductDesriptionTitle>
           <ProductDesription>{description}</ProductDesription>
         </ProductDesriptionContainer>
         <ProductAddToCart
@@ -199,7 +200,7 @@ export const Product = ({ route, navigation }) => {
             navigation.navigate("Cart");
           }}
         >
-          <ProductAddToCartText>Add to Cart</ProductAddToCartText>
+          <ProductAddToCartText>{i18n.t('productScreen.productAddToCartText')}</ProductAddToCartText>
         </ProductAddToCart>
       </ProductBlock>
     </ProductContainer>

@@ -1,5 +1,6 @@
 import { Image, Pressable } from "react-native";
 import styled from "styled-components/native";
+import i18n from '../../assets/translations/i18n';
 
 const ProductContainer = styled.View`
   width: 100%;
@@ -104,7 +105,7 @@ export const CartProduct = ({
       <ProductInfoContainer>
         <ProductNamePrice>
           <ProductText>{name}</ProductText>
-          <ProductText>Price: {price}₽</ProductText>
+          <ProductText>{`${i18n.t('cartScreen.productPriceText')}: ${price}₽`}</ProductText>
         </ProductNamePrice>
         <ProductButtons>
           <ProductAddRemove>

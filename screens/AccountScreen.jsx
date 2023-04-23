@@ -2,6 +2,7 @@ import React from "react";
 import { Image } from "react-native";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import i18n from "../assets/translations/i18n";
 
 const AccountContainer = styled.View`
   width: 100%;
@@ -114,13 +115,13 @@ export const Account = ({ navigation }) => {
 
   const emptyOrders = (
     <OrdersEmptyContainer>
-      <OrdersEmptyText>You haven't made any orders yet</OrdersEmptyText>
+      <OrdersEmptyText>{i18n.t('accountScreen.ordersEmptyText')}</OrdersEmptyText>
     </OrdersEmptyContainer>
   );
 
   const accountWithOrders = (
     <>
-      <OrdersText>Orders:</OrdersText>
+      <OrdersText>{i18n.t('accountScreen.ordersText')}</OrdersText>
       <OrdersContainer
         data={orders}
         extraData={orders}
@@ -145,7 +146,7 @@ export const Account = ({ navigation }) => {
       <AccountBackButton onPress={() => navigation.navigate("Home")}>
         <Image source={backButton} />
       </AccountBackButton>
-      <AccountName>Your profile</AccountName>
+      <AccountName>{i18n.t('accountScreen.yourProfile')}</AccountName>
       <UserName>{name ? name : "Anonymous"}</UserName>
       {orders && orders.length > 0 ? accountWithOrders : emptyOrders}
     </AccountContainer>

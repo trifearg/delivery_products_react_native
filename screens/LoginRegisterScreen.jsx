@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, KeyboardAvoidingView, Image } from "react-native";
 import styled from "styled-components/native";
+import i18n from "../assets/translations/i18n";
 
 const MainContainer = styled.View`
   width: 100%;
@@ -109,13 +110,17 @@ export const LoginRegisterScreen = ({ navigation }) => {
             style={() => [loginOrRegister === "login" && styles.focused]}
             onPress={() => setLoginOrRegister("login")}
           >
-            <LoginResiterText>Login</LoginResiterText>
+            <LoginResiterText>
+              {i18n.t("loginRegisterScreen.loginText")}
+            </LoginResiterText>
           </SwitchButton>
           <SwitchButton
             style={() => [loginOrRegister === "register" && styles.focused]}
             onPress={() => setLoginOrRegister("register")}
           >
-            <LoginResiterText>Register</LoginResiterText>
+            <LoginResiterText>
+              {i18n.t("loginRegisterScreen.registerText")}
+            </LoginResiterText>
           </SwitchButton>
         </LoginRegisterButtons>
       </LoginRegisterContainer>
@@ -125,24 +130,32 @@ export const LoginRegisterScreen = ({ navigation }) => {
         <LoginRegisterForm contentContainerStyle={styles.center}>
           {loginOrRegister === "register" && (
             <View>
-              <FormText>Name</FormText>
-              <FormTextInput cursorColor="#000" placeholder="Enter your name" />
+              <FormText>{i18n.t("loginRegisterScreen.name.text")}</FormText>
+              <FormTextInput
+                cursorColor="#000"
+                placeholder={i18n.t("loginRegisterScreen.name.placeholder")}
+              />
             </View>
           )}
           <View>
-            <FormText>Email</FormText>
-            <FormTextInput cursorColor="#000" placeholder="Enter your email" />
-          </View>
-          <View>
-            <FormText>Password</FormText>
+            <FormText>{i18n.t("loginRegisterScreen.email.text")}</FormText>
             <FormTextInput
               cursorColor="#000"
-              placeholder="Enter your password"
+              placeholder={i18n.t("loginRegisterScreen.name.placeholder")}
+            />
+          </View>
+          <View>
+            <FormText>{i18n.t("loginRegisterScreen.password.text")}</FormText>
+            <FormTextInput
+              cursorColor="#000"
+              placeholder={i18n.t("loginRegisterScreen.password.placeholder")}
             />
           </View>
           <SubmitButton>
             <SubmitText>
-              {loginOrRegister === "register" ? "Register" : "Login"}
+              {loginOrRegister === "register"
+                ? i18n.t("loginRegisterScreen.registerButtonText")
+                : i18n.t("loginRegisterScreen.loginText")}
             </SubmitText>
           </SubmitButton>
         </LoginRegisterForm>

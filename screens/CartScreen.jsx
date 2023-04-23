@@ -8,6 +8,7 @@ import {
   incrementProductCount,
 } from "../redux/slices/cartSlice";
 import { CartProductList } from "../components/cart/CartProductList";
+import i18n from "../assets/translations/i18n";
 
 const CartContainer = styled.View`
   width: 100%;
@@ -114,13 +115,13 @@ export const Cart = ({ navigation }) => {
 
   const emptyCart = (
     <CartEmptyContainer>
-      <CartEmptyText>Your shopping cart is empty</CartEmptyText>
+      <CartEmptyText>{i18n.t('cartScreen.cartEmptyText')}</CartEmptyText>
     </CartEmptyContainer>
   );
 
   const paymentBlock = (
     <PaymentBlock>
-      <PaymentTitle>Total amount: {totalAmount}₽</PaymentTitle>
+      <PaymentTitle>{`${i18n.t('cartScreen.paymentTitle')}: ${totalAmount}₽`}</PaymentTitle>
       <PaymentAddressBlock>
         {location && (
           <>
@@ -130,7 +131,7 @@ export const Cart = ({ navigation }) => {
         )}
       </PaymentAddressBlock>
       <SubmitButton style={{ zIndex: 0.5 }} onPress={() => navigation.navigate("Login/Register")}>
-        <SubmitText>Buy</SubmitText>
+        <SubmitText>{i18n.t('cartScreen.submitText')}</SubmitText>
       </SubmitButton>
     </PaymentBlock>
   );
@@ -155,7 +156,7 @@ export const Cart = ({ navigation }) => {
       >
         <Image source={backButton} />
       </CartBackButton>
-      <CartName>Cart</CartName>
+      <CartName>{i18n.t('cartScreen.cartName')}</CartName>
       {products && products.length > 0 ? cartWithProducts : emptyCart}
     </CartContainer>
   );

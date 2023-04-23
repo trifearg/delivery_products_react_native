@@ -1,5 +1,6 @@
 import { TouchableOpacity, Image, Pressable } from "react-native";
 import styled from "styled-components/native";
+import i18n from "../../assets/translations/i18n";
 
 const ProductView = styled.View`
   border-radius: 10px;
@@ -61,7 +62,7 @@ export const Product = ({ item, navigation, addProductToCart }) => {
           }}
         />
         <ProductTitle>{item.name}</ProductTitle>
-        <ProductWeight>{item.weight} gr</ProductWeight>
+        <ProductWeight>{`${item.weight} ${i18n.t('homeScreen.productWeight')}`}</ProductWeight>
         <ProductFooter>
           <ProductPrice>{item.price}₽</ProductPrice>
           <Pressable onPress={() => addProductToCart(item)}>

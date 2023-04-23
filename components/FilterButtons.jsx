@@ -1,5 +1,6 @@
 import { SafeAreaView } from "react-native";
 import styled from "styled-components/native";
+import i18n from "../assets/translations/i18n";
 
 const FilterContainer = styled.ScrollView`
   width: 100%;
@@ -29,17 +30,17 @@ const currentFilterTextStyled = {
 
 const filters = [
   {
-    text: "🥐 Pastry",
+    text: `🥐 ${i18n.t('homeScreen.filters.pastry')}`,
     type: "Pastry",
     id: 1,
   },
   {
-    text: "🧀 Dairy products",
+    text: `🧀 ${i18n.t('homeScreen.filters.dairyProducts')}`,
     type: "Dairy products",
     id: 2,
   },
   {
-    text: "🥦 Vegetables",
+    text: `🥦 ${i18n.t('homeScreen.filters.vegetables')}`,
     type: "Vegetables",
     id: 3,
   },

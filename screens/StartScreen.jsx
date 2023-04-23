@@ -1,4 +1,5 @@
 import styled from "styled-components/native";
+import i18n from '../assets/translations/i18n';
 
 const StartContainer = styled.View`
   width: 100%;
@@ -49,12 +50,12 @@ export const Start = ({ navigation }) => {
   return (
     <StartContainer>
       <StartImage source={startImg} />
-      <StartTextPartOne>The Fastest In</StartTextPartOne>
+      <StartTextPartOne>{i18n.t('startScreen.startTextPartOne')}</StartTextPartOne>
       <StartTextPartTwo>
-        Delivery <StartTextPartThree>Products</StartTextPartThree>
+        {i18n.t('startScreen.startTextPartTwo')} <StartTextPartThree>{i18n.t('startScreen.startTextPartThree')}</StartTextPartThree>
       </StartTextPartTwo>
       <StartButton onPress={() => navigation.navigate("Home")}>
-        <StartButtonText>Get Started</StartButtonText>
+        <StartButtonText>{i18n.t('startScreen.startButtonText')}</StartButtonText>
       </StartButton>
     </StartContainer>
   );

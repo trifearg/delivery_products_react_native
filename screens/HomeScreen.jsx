@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Image, Alert, ActivityIndicator } from "react-native";
-import * as Location from "expo-location";
+import React, { useState } from "react";
+import { Image } from "react-native";
 import styled from "styled-components/native";
 import { FilterButtons } from "../components/FilterButtons";
 import { ProductList } from "../components/home/ProductList";
 import { useGetProductsQuery } from "../redux/api/productsApi";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, incrementProductCount } from "../redux/slices/cartSlice";
-import { updateLocation, updateLoadingLocation } from "../redux/slices/userSlice";
+import i18n from "../assets/translations/i18n";
 
 const HomeContainer = styled.View`
   width: 100%;
@@ -31,6 +30,7 @@ const HeaderFirstBlock = styled.View`
 
 const HeaderSecondBlock = styled.View`
   flex-direction: row;
+  align-items: center;
 `;
 
 const HeaderLocation = styled.Text`
@@ -43,9 +43,9 @@ const HeaderLocation = styled.Text`
 
 const HeaderTitle = styled.Text`
   color: #0d0d0d;
-  font-size: 28px;
+  font-size: ${props => props.isRU ? '20px' : '28px'};
   font-family: "DM-Sans-Medium";
-  line-height: 33px;
+  line-height: ${props => props.isRU ? '23px' : '33px'};
   flex-shrink: 1;
 `;
 
@@ -74,12 +74,6 @@ const SearchingIcon = styled.Image`
   top: 12px;
 `;
 
-const LoadingContainer = styled.View`
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`;
-
 const deliverHomeImg = require("../assets/img/deliver_home.png");
 const searchingIcon = require("../assets/img/searching.png");
 const homeLocationIcon = require("../assets/img/home_location_icon.png");
@@ -93,61 +87,6 @@ export const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cart.products);
   const location = useSelector((state) => state.user.location);
-  const isLoadingLocation = useSelector(
-    (state) => state.user.isLoadingLocation
-  );
-
-  useEffect(() => {
-    checkLocationEnabled();
-    getCurrentLocation();
-  }, []);
-
-  const checkLocationEnabled = async () => {
-    try {
-      let enabled = await Location.hasServicesEnabledAsync();
-      if (!enabled) {
-        Alert.alert(
-          "Location Service not enabled",
-          "Please enable your location services to continue",
-          [{ text: "OK" }],
-          { cancelable: false }
-        );
-      }
-    } catch (error) {
-      console.log("Error: ", error);
-      dispatch(updateLoadingLocation(false));
-    }
-  };
-
-  const getCurrentLocation = async () => {
-    try {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert(
-          "Permission not granted",
-          "Allow the app to use location service.",
-          [{ text: "OK" }],
-          { cancelable: false }
-        );
-        dispatch(updateLoadingLocation(false));
-      }
-      let { coords } = await Location.getCurrentPositionAsync();
-      if (coords) {
-        const { latitude, longitude } = coords;
-        let response = await Location.reverseGeocodeAsync({
-          latitude,
-          longitude,
-        });
-        for (let item of response) {
-          let address = `${item.name}, ${item.street}, ${item.postalCode}, ${item.city}`;
-          dispatch(updateLocation(address));
-        }
-      }
-    } catch (error) {
-      console.log("Error: ", error);
-      dispatch(updateLoadingLocation(false));
-    }
-  };
 
   const getProducts = () => {
     let products = currentFilter
@@ -183,11 +122,6 @@ export const Home = ({ navigation }) => {
 
   return (
     <HomeContainer>
-      {isLoadingLocation && (
-        <LoadingContainer>
-          <ActivityIndicator size="large" color="#f00808" />
-        </LoadingContainer>
-      )}
       <HeaderContainer>
         <HeaderFirstBlock>
           {location && (
@@ -198,13 +132,13 @@ export const Home = ({ navigation }) => {
           )}
         </HeaderFirstBlock>
         <HeaderSecondBlock>
-          <HeaderTitle>Order Your Products Fast and Free</HeaderTitle>
+          <HeaderTitle isRU={i18n.locale === 'ru-RU'}>{i18n.t('homeScreen.headerTitle')}</HeaderTitle>
           <Image source={deliverHomeImg} />
         </HeaderSecondBlock>
       </HeaderContainer>
       <SearchingContainer>
         <SearchingInput
-          placeholder="Search"
+          placeholder={i18n.t('homeScreen.searchingInput')}
           cursorColor="#000000"
           value={searchingProduct}
           onChangeText={(text) => setSearchingProduct(text)}
