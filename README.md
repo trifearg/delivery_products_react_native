@@ -19,6 +19,16 @@
 
 ![image](https://user-images.githubusercontent.com/44906806/235351965-a777b14e-402a-4822-ae57-33dd0269e688.png)
 
+4. Поддержка портретного вида для скрина с конкретным продуктом
+
+Книжная версия:
+
+![image](https://user-images.githubusercontent.com/44906806/235352693-7cfb6502-f328-439b-b4f3-ba45d5545267.png)
+
+Портретная версия:
+
+![ezgif com-video-to-gif (3)](https://user-images.githubusercontent.com/44906806/235352755-77867e1f-ecca-4e02-9e61-6c52c27ea8ca.gif)
+
 **4. Написание бизнес-логики** 
 
 За бизнес логику отвечают хуки функциональных компонент наподобие useState и useEffect.
