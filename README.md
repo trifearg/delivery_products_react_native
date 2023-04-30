@@ -10,7 +10,9 @@
 
 Макеты создавались в figma. Макеты представлены в двух вариантах в зависимости от локализации - ru и en. 
 
-Ссылка на макеты: https://www.figma.com/file/M2iI68fEt4xoHj7w5j4zhL/Delivery-products-UI-Design?node-id=0-1&t=iaVGjTfiOG6Dp3Sz-0 
+Ссылка на макеты: 
+
+https://www.figma.com/file/M2iI68fEt4xoHj7w5j4zhL/Delivery-products-UI-Design?node-id=0-1&t=iaVGjTfiOG6Dp3Sz-0 
 
 **3. Разработка пользовательского интерфейса**
 
@@ -19,7 +21,7 @@
 
 ![image](https://user-images.githubusercontent.com/44906806/235351965-a777b14e-402a-4822-ae57-33dd0269e688.png)
 
-4. Поддержка портретного вида для скрина с конкретным продуктом
+**4. Поддержка портретного вида для скрина с конкретным продуктом**
 
 Книжная версия:
 
@@ -29,18 +31,18 @@
 
 ![ezgif com-video-to-gif (3)](https://user-images.githubusercontent.com/44906806/235352755-77867e1f-ecca-4e02-9e61-6c52c27ea8ca.gif)
 
-**4. Написание бизнес-логики** 
+**5. Написание бизнес-логики** 
 
 За бизнес логику отвечают хуки функциональных компонент наподобие useState и useEffect.
 Запросы к API сделаны с использованием react-query.
 
-**5. Локализация приложения**
+**6. Локализация приложения**
 
 Локализация сделана с использованием библиотек expo-localization и i18n-js. 
 
 ![ezgif com-video-to-gif (1)](https://user-images.githubusercontent.com/44906806/235351818-3958ce2f-e36a-4e9c-b3fa-634d66ac5f70.gif)
 
-**6. Адаптация приложения для работы с геолакацией**
+**7. Адаптация приложения для работы с геолакацией**
 
 Для работа с геолакацией была использована библиотека expo-location.
 
