@@ -11,6 +11,7 @@
 Макеты создавались в figma. Макеты представлены в двух вариантах в зависимости от локализации - ru и en. 
 
 Ссылка на макеты: 
+
 https://www.figma.com/file/M2iI68fEt4xoHj7w5j4zhL/Delivery-products-UI-Design?node-id=0-1&t=iaVGjTfiOG6Dp3Sz-0 
 
 **3. Разработка пользовательского интерфейса**
