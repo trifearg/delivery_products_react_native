@@ -10,7 +10,8 @@ export class ProductDAO {
             price: req.body.price,
             description: req.body.description,
             energyValue: req.body.energyValue,
-            weight: req.body.weight
+            weight: req.body.weight,
+            type: req.body.type
         }).then(data => item = data);
         return item;
     };

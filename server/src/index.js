@@ -8,6 +8,7 @@ let category = require('./models/category');
 let customer = require('./models/customer.js');
 let cartProduct = require('./models/cart_product');
 let productCategory = require('./models/product_category');
+export let order = require('./models/order');
 
 const Sequelize = require('sequelize');
 
@@ -34,8 +35,10 @@ let dbCustomer = customer(sequelize);
 let dbCategory = category(sequelize);
 let dbCartProduct = cartProduct(sequelize);
 let dbProductCategory = productCategory(sequelize);
+let dbOrder = order(sequelize);
 
-dbCustomer.belongsTo(dbCart, { onDelete: 'CASCADE', onUpdate: 'NO ACTION', foreignKey: 'id' });
+dbCart.belongsTo(dbCustomer, { onDelete: 'CASCADE', onUpdate: 'NO ACTION', foreignKey: 'id_customer' });
+dbOrder.belongsTo(dbCustomer, { onDelete: 'CASCADE', onUpdate: 'NO ACTION', foreignKey: 'id_customer' });
 dbCart.hasMany(dbCartProduct, { onDelete: 'NO ACTION', onUpdate: 'NO ACTION', foreignKey: 'id_cart' });
 dbCart.belongsToMany(dbProduct, { through: dbCartProduct, foreignKey: 'id_cart' });
 dbProduct.belongsToMany(dbCart, { through: dbCartProduct, foreignKey: 'id_product' });
@@ -58,6 +61,7 @@ module.exports.customer = dbCustomer;
 module.exports.cartProduct = dbCartProduct;
 module.exports.category = dbCategory;
 module.exports.productCategory = dbProductCategory;
+module.exports.order = dbOrder;
 module.exports.sequelize = sequelize;
 
 // sequelize.sync()

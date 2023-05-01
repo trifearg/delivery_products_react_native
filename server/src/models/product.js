@@ -26,6 +26,10 @@ module.exports = function (sequelize) {
       type: Sequelize.STRING,
       allowNull: false
     },
+    type: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     energyValue: {
       type: Sequelize.INTEGER,
       allowNull: false
