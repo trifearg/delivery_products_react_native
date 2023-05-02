@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, KeyboardAvoidingView, Image } from "react-native";
 import styled from "styled-components/native";
 import i18n from "../assets/translations/i18n";
+import { useRegisterMutation, useLoginMutation } from "../redux/api/customersApi";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slices/userSlice";
 
 const MainContainer = styled.View`
   width: 100%;
@@ -49,25 +52,25 @@ const LoginRegisterForm = styled.ScrollView`
   background-color: #fff;
   border-radius: 20px;
   flex-direction: column;
-  padding-top: 60px;
+  padding-top: 10px;
 `;
 
 const FormTextInput = styled.TextInput`
   padding-bottom: 5px;
   border-bottom-width: 1px;
-  border-bottom-color: #adadad;
+  border-bottom-color: ${props => props.isError ? '#f00808' : '#adadad'};
   width: 320px;
   font-family: "DM-Sans";
   font-size: 15px;
   line-height: 19px;
   margin-top: 10px;
-  margin-bottom: 25px;
 `;
 
 const FormText = styled.Text`
   font-size: 18px;
   line-height: 22px;
   font-family: "DM-Sans-Bold";
+  margin-top: 25px;
 `;
 
 const SubmitButton = styled.Pressable`
@@ -78,6 +81,7 @@ const SubmitButton = styled.Pressable`
   justify-content: center;
   align-items: center;
   margin-top: 14px;
+  margin-top: 40px;
 `;
 
 const SubmitText = styled.Text`
@@ -87,12 +91,69 @@ const SubmitText = styled.Text`
   font-family: "DM-Sans-Bold";
 `;
 
+const InputTextError = styled.Text`
+  font-family: "DM-Sans";
+  font-size: 15px;
+  line-height: 19px;
+  color: #F00808;
+  margin-top: 10px;
+`;
+
+const EmailContainer = styled.View`
+  width: 100%;
+  padding: 0 35px;
+`
+
 const loginBg = require("../assets/img/login.png");
 const registerBg = require("../assets/img/register.png");
 const backButton = require("../assets/img/back_button.png");
 
 export const LoginRegisterScreen = ({ navigation }) => {
   const [loginOrRegister, setLoginOrRegister] = useState("login");
+
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [emailExistedError, setEmailExistedError] = useState(false);
+
+  const [ regiser, registeredUser ] = useRegisterMutation();
+  const [ login, authorizedUser ] = useLoginMutation();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (registeredUser.isSuccess) {
+      dispatch(setUser(registeredUser.data));
+      navigation.navigate("Cart");
+    }
+
+    if (registeredUser.isError) {
+      if (registeredUser.error.status === 403) {
+        setEmailExistedError(true);
+      }
+    }
+  }, [registeredUser]);
+
+  useEffect(() => {
+    if (authorizedUser.isSuccess) {
+      dispatch(setUser(authorizedUser.data));
+      navigation.navigate("Cart");
+    }
+
+    if (authorizedUser.isError) {
+      if (authorizedUser.error.status === 404) {
+        setEmailError(true);
+      }
+      if (authorizedUser.error.status === 401) {
+        setPasswordError(true);
+      }
+    }
+  }, [authorizedUser]);
+
+
   return (
     <MainContainer>
       <BackButton
@@ -108,7 +169,12 @@ export const LoginRegisterScreen = ({ navigation }) => {
         <LoginRegisterButtons>
           <SwitchButton
             style={() => [loginOrRegister === "login" && styles.focused]}
-            onPress={() => setLoginOrRegister("login")}
+            onPress={() => {
+              setEmailError(false);
+              setPasswordError(false);
+              setEmailExistedError(false);
+              setLoginOrRegister("login");
+            }}
           >
             <LoginResiterText>
               {i18n.t("loginRegisterScreen.loginText")}
@@ -116,7 +182,12 @@ export const LoginRegisterScreen = ({ navigation }) => {
           </SwitchButton>
           <SwitchButton
             style={() => [loginOrRegister === "register" && styles.focused]}
-            onPress={() => setLoginOrRegister("register")}
+            onPress={() => {
+              setEmailError(false);
+              setPasswordError(false);
+              setEmailExistedError(false);
+              setLoginOrRegister("register");
+            }}
           >
             <LoginResiterText>
               {i18n.t("loginRegisterScreen.registerText")}
@@ -134,24 +205,61 @@ export const LoginRegisterScreen = ({ navigation }) => {
               <FormTextInput
                 cursorColor="#000"
                 placeholder={i18n.t("loginRegisterScreen.name.placeholder")}
+                value={name}
+                onChangeText={(text) => {
+                  setName(text);
+                }}
               />
             </View>
           )}
-          <View>
+          <EmailContainer>
             <FormText>{i18n.t("loginRegisterScreen.email.text")}</FormText>
             <FormTextInput
               cursorColor="#000"
-              placeholder={i18n.t("loginRegisterScreen.name.placeholder")}
+              placeholder={i18n.t("loginRegisterScreen.email.placeholder")}
+              value={email}
+              onChangeText={(text) => {
+                setEmail(text);
+              }}
+              isError={emailError || emailExistedError}
+              placeholderTextColor={emailError || emailExistedError ? '#f00808' : '#ADADAD'}
             />
-          </View>
+            {emailError && <InputTextError>{i18n.t("loginRegisterScreen.email.errorLogin")}</InputTextError>}
+            {emailExistedError && <InputTextError>{i18n.t("loginRegisterScreen.email.errorRegister")}</InputTextError>}
+          </EmailContainer>
           <View>
             <FormText>{i18n.t("loginRegisterScreen.password.text")}</FormText>
             <FormTextInput
               cursorColor="#000"
               placeholder={i18n.t("loginRegisterScreen.password.placeholder")}
+              value={password}
+              secureTextEntry
+              onChangeText={(text) => {
+                setPassword(text);
+              }}
+              placeholderTextColor={passwordError ? '#f00808' : '#ADADAD'}
+              isError={passwordError}
             />
+            {passwordError && <InputTextError>{i18n.t("loginRegisterScreen.password.errorLogin")}</InputTextError>}
           </View>
-          <SubmitButton>
+          <SubmitButton onPress={() => {
+            if (loginOrRegister === 'register') {
+              regiser({
+                name,
+                email,
+                password
+              });
+            }
+            if (loginOrRegister === 'login') {
+              login({
+                email,
+                password
+              });
+            }
+            setEmailError(false);
+            setPasswordError(false);
+            setEmailExistedError(false);
+          }}>
             <SubmitText>
               {loginOrRegister === "register"
                 ? i18n.t("loginRegisterScreen.registerButtonText")

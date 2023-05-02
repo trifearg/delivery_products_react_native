@@ -90,12 +90,12 @@ export const Home = ({ navigation }) => {
 
   const getProducts = () => {
     let products = currentFilter
-      ? data.filter((product) => product.type === currentFilter)
-      : data;
+      ? data?.products.filter((product) => product.type === currentFilter)
+      : data?.products;
     let searchingProducts = [];
 
     if (searchingProduct) {
-      searchingProducts = data.filter((product) =>
+      searchingProducts = data?.products.filter((product) =>
         product.name.toLowerCase().includes(searchingProduct.toLowerCase())
       );
       products = [...searchingProducts];
@@ -113,7 +113,7 @@ export const Home = ({ navigation }) => {
         id: item.id,
         name: item.name,
         price: item.price,
-        image: item.image,
+        image: item.photos[0].photo,
         count: 1,
       };
       dispatch(addProduct(cartProduct));

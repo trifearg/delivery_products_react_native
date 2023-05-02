@@ -19,16 +19,26 @@ export default class CustomersController {
       // Нужно создать пользователя
       try {
         const user = await CustomerDAO.createCustomer(req);
-        res.status(201).json(user)
+        const token = JWT.sign({
+          email: user.email,
+          userId: user.id,
+          name: user.name
+        }, 'dev-jwt', {expiresIn: 60 * 60});
 
-        const message = {
-          to: user.dataValues.email,
-          subject: 'Регистрация в интернет-магазине INTERIOR',
-          html: `<h2>Здравствуйте, ${user.dataValues.firstName}!</h2>
-                 <p>Поздравляем, Вы успешно зарегистрировались.</p>
-                 <p>Спасибо, что выбрали наш интернет-магазин Interior!</p>`
-        }
-        await mailer(message);
+        res.status(201).json({
+          name: user.name,
+          userId: user.id,
+          token: `Bearer ${token}`
+        })
+
+        // const message = {
+        //   to: user.dataValues.email,
+        //   subject: 'Регистрация в интернет-магазине INTERIOR',
+        //   html: `<h2>Здравствуйте, ${user.dataValues.firstName}!</h2>
+        //          <p>Поздравляем, Вы успешно зарегистрировались.</p>
+        //          <p>Спасибо, что выбрали наш интернет-магазин Interior!</p>`
+        // }
+        // await mailer(message);
       } catch (e) {
         errorHandler(res, e);
       }
@@ -52,6 +62,8 @@ export default class CustomersController {
         }, 'dev-jwt', {expiresIn: 60 * 60});
 
         res.status(200).json({
+          name: candidate.name,
+          userId: candidate.id,
           token: `Bearer ${token}`
         })
       } else {

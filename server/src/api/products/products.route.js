@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/category", productsCtrl.getProductsByCategory);
-router.post("/all", productsCtrl.getProducts);
+router.get("/all", productsCtrl.getProducts);
 router.post("/createProduct", productsCtrl.createProduct);
 router.get("/:id", productsCtrl.getProductById);
 router.patch("/:id", productsCtrl.updateProduct);

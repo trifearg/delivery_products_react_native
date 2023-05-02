@@ -137,7 +137,7 @@ export const Product = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const cartProducts = useSelector(state => state.cart.products);
   const { product } = route.params;
-  const { image, name, description, price, energy } = product;
+  const { name, description, price, energyValue, photos } = product;
 
   const incrementProductCounter = () => {
     setCountProduct(prev => prev + 1);
@@ -154,7 +154,7 @@ export const Product = ({ route, navigation }) => {
       <ProductBackButton onPress={() => navigation.navigate("Home")}>
         <Image source={backButton} />
       </ProductBackButton>
-      <ProductImage resizeMode="center" source={{ uri: image }} />
+      <ProductImage resizeMode="center" source={{ uri: photos[0].photo }} />
       <ProductBlock>
         <ProductName>{name}</ProductName>
         <ProductPriceContainer>
@@ -171,7 +171,7 @@ export const Product = ({ route, navigation }) => {
         </ProductPriceContainer>
         <ProductEnergyContainer>
           <ProductEnergyTitle>{i18n.t('productScreen.productEnergyTitle')}</ProductEnergyTitle>
-          <ProductEnergy>{`${energy} ${i18n.t('productScreen.productEnergy')}`}</ProductEnergy>
+          <ProductEnergy>{`${energyValue} ${i18n.t('productScreen.productEnergy')}`}</ProductEnergy>
         </ProductEnergyContainer>
         <ProductDesriptionContainer>
           <ProductDesriptionTitle>{i18n.t('productScreen.productDesriptionTitle')}{"\n"}</ProductDesriptionTitle>
@@ -191,7 +191,7 @@ export const Product = ({ route, navigation }) => {
                 id: product.id, 
                 name: product.name,
                 price: product.price,
-                image: product.image,
+                image: photos[0].photo,
                 count: countProduct
               }
               dispatch(addProduct(cartProduct));

@@ -97,6 +97,7 @@ export const Cart = ({ navigation }) => {
   const products = useSelector((state) => state.cart.products);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const location = useSelector((state) => state.user.location);
+  const userName = useSelector((state) => state.user.name);
   const dispatch = useDispatch();
 
   const removeProductFromCart = (id) => {
@@ -130,7 +131,13 @@ export const Cart = ({ navigation }) => {
           </>
         )}
       </PaymentAddressBlock>
-      <SubmitButton style={{ zIndex: 0.5 }} onPress={() => navigation.navigate("Login/Register")}>
+      <SubmitButton style={{ zIndex: 0.5 }} onPress={() => {
+        if (userName) {
+          console.log("оплатить");
+        } else {
+          navigation.navigate("Login/Register")
+        }
+      }}>
         <SubmitText>{i18n.t('cartScreen.submitText')}</SubmitText>
       </SubmitButton>
     </PaymentBlock>

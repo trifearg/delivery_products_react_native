@@ -58,7 +58,7 @@ export const Product = ({ item, navigation, addProductToCart }) => {
         <ProductImage
           resizeMode="center"
           source={{
-            uri: item.image,
+            uri: item.photos[0].photo,
           }}
         />
         <ProductTitle>{item.name}</ProductTitle>
