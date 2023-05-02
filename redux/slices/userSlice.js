@@ -6,7 +6,7 @@ export const userSlice = createSlice({
         name: "",
         email: "",
         // token: "", to do
-        orders: [], // order: { orderNumber: number, status: string, totalAmount: number }
+        orders: [], // orders: { orderNumber: number, status: string, totalAmount: number }
         location: ""
     },
     reducers: {

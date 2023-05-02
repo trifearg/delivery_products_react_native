@@ -17,8 +17,8 @@ export default class CustomersController {
       });
     } else {
       // Нужно создать пользователя
-      const user = await CustomerDAO.createCustomer(req);
       try {
+        const user = await CustomerDAO.createCustomer(req);
         res.status(201).json(user)
 
         const message = {
