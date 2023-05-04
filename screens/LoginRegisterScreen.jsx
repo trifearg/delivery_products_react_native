@@ -173,6 +173,8 @@ export const LoginRegisterScreen = ({ navigation }) => {
               setEmailError(false);
               setPasswordError(false);
               setEmailExistedError(false);
+              setEmail("");
+              setPassword("");
               setLoginOrRegister("login");
             }}
           >
@@ -186,6 +188,8 @@ export const LoginRegisterScreen = ({ navigation }) => {
               setEmailError(false);
               setPasswordError(false);
               setEmailExistedError(false);
+              setEmail("");
+              setPassword("");
               setLoginOrRegister("register");
             }}
           >

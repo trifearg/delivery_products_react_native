@@ -1,8 +1,12 @@
 import React from "react";
+import { ActivityIndicator } from "react-native";
 import { Image } from "react-native";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import i18n from "../assets/translations/i18n";
+import { useGetUserOrdersQuery } from "../redux/api/ordersApi";
+import { useDispatch } from "react-redux";
+import { clearUser } from "../redux/slices/userSlice";
 
 const AccountContainer = styled.View`
   width: 100%;
@@ -15,6 +19,22 @@ const AccountBackButton = styled.Pressable`
   position: absolute;
   left: 24px;
   top: 34px;
+`;
+
+const AccountLogoutButton = styled.Pressable`
+  position: absolute;
+  top: 34px;
+  right: 24px;
+  border: 1px solid black;
+  border-radius: 10px;
+`;
+
+const AccountLogoutButtonText = styled.Text`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 23px;
+  padding: 4px 16px;
 `;
 
 const AccountName = styled.Text`
@@ -98,57 +118,98 @@ const OrdersEmptyText = styled.Text`
   font-family: "DM-Sans-Medium";
 `;
 
-// const tempOrders = [
-//   { id: 1, status: "Delivered", totalAmount: 100, orderNumber: 123123 },
-//   { id: 1, status: "Delivered", totalAmount: 100, orderNumber: 123123 },
-//   { id: 1, status: "Delivered", totalAmount: 100, orderNumber: 123123 },
-//   { id: 1, status: "Delivered", totalAmount: 100, orderNumber: 123123 },
-//   { id: 1, status: "Delivered", totalAmount: 100, orderNumber: 123123 },
-//   { id: 1, status: "Delivered", totalAmount: 100, orderNumber: 123123 },
-// ];
+const StateContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  height: 50%;
+`;
+
+const ErrorText = styled.Text`
+  color: #f00808;
+  font-family: "DM-Sans-Bold";
+  font-size: 24px;
+`;
 
 const backButton = require("../assets/img/back_button.png");
 
 export const Account = ({ navigation }) => {
-  const name = useSelector((state) => state.user.name);
-  const orders = useSelector((state) => state.user.orders);
+  const user = useSelector((state) => state.user);
+  const {
+    data = [],
+    error,
+    isLoading,
+  } = useGetUserOrdersQuery(user?.userId, {
+    pollingInterval: 1000,
+    skip: !user?.userId
+  });
+  const dispatch = useDispatch();
 
   const emptyOrders = (
     <OrdersEmptyContainer>
-      <OrdersEmptyText>{i18n.t('accountScreen.ordersEmptyText')}</OrdersEmptyText>
+      <OrdersEmptyText>
+        {i18n.t("accountScreen.ordersEmptyText")}
+      </OrdersEmptyText>
     </OrdersEmptyContainer>
   );
 
-  const accountWithOrders = (
-    <>
-      <OrdersText>{i18n.t('accountScreen.ordersText')}</OrdersText>
-      <OrdersContainer
-        data={orders}
-        extraData={orders}
-        showsVerticalScrollIndicator
-        renderItem={({ item, index }) => (
-          <OrderContainer key={index}>
-            <OrderFirstBlock>
-              <OrderFirstText>№{item.orderNumber}</OrderFirstText>
-              <OrderFirstText>{item.totalAmount}₽</OrderFirstText>
-            </OrderFirstBlock>
-            <OrderStatus>
-              <OrderStatusText>{item.status}</OrderStatusText>
-            </OrderStatus>
-          </OrderContainer>
-        )}
-      />
-    </>
-  );
+  const accountWithOrders = () => {
+    if (isLoading) {
+      return (
+        <StateContainer>
+          <ActivityIndicator size="large" color="#f00808" />
+        </StateContainer>
+      );
+    }
+
+    if (error) {
+      return (
+        <StateContainer>
+          <ErrorText>{i18n.t("commonError")}</ErrorText>
+        </StateContainer>
+      );
+    }
+
+    return (
+      <>
+        <OrdersText>{i18n.t("accountScreen.ordersText")}</OrdersText>
+        <OrdersContainer
+          data={data}
+          extraData={data}
+          showsVerticalScrollIndicator
+          renderItem={({ item, index }) => (
+            <OrderContainer key={index}>
+              <OrderFirstBlock>
+                <OrderFirstText>№{index + 1}</OrderFirstText>
+                <OrderFirstText>{item.price}₽</OrderFirstText>
+              </OrderFirstBlock>
+              <OrderStatus>
+                <OrderStatusText>{item.status}</OrderStatusText>
+              </OrderStatus>
+            </OrderContainer>
+          )}
+        />
+      </>
+    );
+  };
 
   return (
     <AccountContainer>
       <AccountBackButton onPress={() => navigation.navigate("Home")}>
         <Image source={backButton} />
       </AccountBackButton>
-      <AccountName>{i18n.t('accountScreen.yourProfile')}</AccountName>
-      <UserName>{name ? name : "Anonymous"}</UserName>
-      {orders && orders.length > 0 ? accountWithOrders : emptyOrders}
+      {user?.name && (
+        <AccountLogoutButton
+          onPress={() => {
+            dispatch(clearUser());
+            navigation.navigate("Home");
+          }}
+        >
+          <AccountLogoutButtonText>{i18n.t("accountScreen.logout")}</AccountLogoutButtonText>
+        </AccountLogoutButton>
+      )}
+      <AccountName>{i18n.t("accountScreen.yourProfile")}</AccountName>
+      <UserName>{user?.name ? user?.name : "Anonymous"}</UserName>
+      {data && data.length > 0 && user?.token ? accountWithOrders() : emptyOrders}
     </AccountContainer>
   );
 };

@@ -6,7 +6,6 @@ export const userSlice = createSlice({
         name: "",
         userId: "",
         token: "",
-        orders: [], // orders: { orderNumber: number, status: string, totalAmount: number }
         location: ""
     },
     reducers: {
@@ -18,8 +17,13 @@ export const userSlice = createSlice({
             state.userId = action.payload.userId;
             state.token = action.payload.token;
         },
+        clearUser: (state, action) => {
+            state.name = "";
+            state.userId = "";
+            state.token = "";
+        }
     }
 });
 
 
-export const { updateLocation, setUser } = userSlice.actions
+export const { updateLocation, setUser, clearUser } = userSlice.actions

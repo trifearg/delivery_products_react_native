@@ -1,6 +1,7 @@
 import { FlatList, ActivityIndicator } from "react-native";
 import { Product } from "./Product";
 import styled from "styled-components";
+import i18n from "../../assets/translations/i18n";
 
 const ProductListContainer = styled.View`
   margin-top: 24px;
@@ -38,7 +39,7 @@ export const ProductList = ({
   if (error) {
     return (
       <StateContainer>
-        <ErrorText>Something went wrong!</ErrorText>
+        <ErrorText>{i18n.t("commonError")}</ErrorText>
       </StateContainer>
     );
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
@@ -6,9 +6,11 @@ import {
   removeProduct,
   decrementProductCount,
   incrementProductCount,
+  clearCart
 } from "../redux/slices/cartSlice";
 import { CartProductList } from "../components/cart/CartProductList";
 import i18n from "../assets/translations/i18n";
+import { useCreateOrderMutation } from "../redux/api/ordersApi";
 
 const CartContainer = styled.View`
   width: 100%;
@@ -97,8 +99,16 @@ export const Cart = ({ navigation }) => {
   const products = useSelector((state) => state.cart.products);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const location = useSelector((state) => state.user.location);
-  const userName = useSelector((state) => state.user.name);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [createOrder, result] = useCreateOrderMutation();
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      dispatch(clearCart());
+      navigation.navigate("SuccessOrder");
+    }
+  }, [result]);
 
   const removeProductFromCart = (id) => {
     dispatch(removeProduct(id));
@@ -132,8 +142,12 @@ export const Cart = ({ navigation }) => {
         )}
       </PaymentAddressBlock>
       <SubmitButton style={{ zIndex: 0.5 }} onPress={() => {
-        if (userName) {
-          console.log("оплатить");
+        if (user?.token) {
+          createOrder({
+            customerId: user.userId,
+            price: totalAmount,
+            status: "Delivered"
+          })
         } else {
           navigation.navigate("Login/Register")
         }

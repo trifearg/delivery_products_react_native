@@ -8,13 +8,15 @@ export class OrderDAO {
             price: req.body.price,
             status: req.body.status
         }
-        await order.create(newOrder).then(() => console.log("Создан новый заказ!"));
+        let info;
+        await order.create(newOrder).then((data) => info = data);
+        return info;
     };
 
     static async getAllOrders(req) {
         let info = await order.findAll({
             where: {
-                id_customer: req.body.customerId
+                id_customer: req.params.id
             }
         });
         return info;

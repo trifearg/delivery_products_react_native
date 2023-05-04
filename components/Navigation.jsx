@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LoginRegisterScreen } from "../screens/LoginRegisterScreen";
 import { updateLocation } from "../redux/slices/userSlice";
 import * as Location from "expo-location";
+import { SuccessOrder } from "../screens/SuccessOrder";
 
 const Tab = createBottomTabNavigator();
 
@@ -122,6 +123,14 @@ export const Navigation = () => {
         <Tab.Screen
           name="Product"
           component={Product}
+          options={{
+            tabBarStyle: { display: "none" },
+            tabBarButton: () => null,
+          }}
+        />
+        <Tab.Screen
+          name="SuccessOrder"
+          component={SuccessOrder}
           options={{
             tabBarStyle: { display: "none" },
             tabBarButton: () => null,

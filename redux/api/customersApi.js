@@ -19,7 +19,7 @@ export const customersApi = createApi({
         method: 'POST',
         body: user,
       }),
-    })
+    }),
   }),
 });
 

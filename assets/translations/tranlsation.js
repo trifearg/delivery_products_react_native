@@ -9,6 +9,7 @@ const en = {
     ordersEmptyText: "You haven't made any orders yet",
     ordersText: "Orders",
     yourProfile: "Your profile",
+    logout: "Log out",
   },
   cartScreen: {
     cartEmptyText: "Your shopping cart is empty",
@@ -53,6 +54,11 @@ const en = {
     productDesriptionTitle: "About",
     productAddToCartText: "Add to Cart",
   },
+  successOrderScreen: {
+    text: "Order sucesfulled",
+    buttonText: "Continue shopping",
+  },
+  commonError: "Something went wrong",
 };
 
 const ru = {
@@ -66,6 +72,7 @@ const ru = {
     ordersEmptyText: "Вы еще не сделали ни одного заказа",
     ordersText: "Заказы",
     yourProfile: "Профиль",
+    logout: "Выйти",
   },
   cartScreen: {
     cartEmptyText: "Ваша корзина пуста",
@@ -110,6 +117,11 @@ const ru = {
     productDesriptionTitle: "Описание",
     productAddToCartText: "Добавить в корзину",
   },
+  successOrderScreen: {
+    text: "Заказ оформлен",
+    buttonText: "Продолжить покупки",
+  },
+  commonError: "Что-то пошло не так",
 };
 
 const translations = {

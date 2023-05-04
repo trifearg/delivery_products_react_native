@@ -38,8 +38,13 @@ export const cartSlice = createSlice({
       const foundIndex = state.products.findIndex(product => product.id === action.payload.id);
       state.products[foundIndex].count -= action.payload.count;
       state.totalAmount -= state.products[foundIndex].price;
+    },
+    clearCart: (state, action) => {
+      state.count = 0;
+      state.products = [];
+      state.totalAmount = 0;
     }
   },
 });
 
-export const { addProduct, removeProduct, incrementProductCount, decrementProductCount } = cartSlice.actions;
+export const { addProduct, removeProduct, incrementProductCount, decrementProductCount, clearCart } = cartSlice.actions;
