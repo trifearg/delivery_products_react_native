@@ -48,7 +48,7 @@ const startImg = require("../assets/img/start.png");
 
 export const Start = ({ navigation }) => {
   return (
-    <StartContainer>
+    <StartContainer testID="startScreen">
       <StartImage source={startImg} />
       <StartTextPartOne>{i18n.t('startScreen.startTextPartOne')}</StartTextPartOne>
       <StartTextPartTwo>

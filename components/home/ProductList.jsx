@@ -1,6 +1,6 @@
 import { FlatList, ActivityIndicator } from "react-native";
 import { Product } from "./Product";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import i18n from "../../assets/translations/i18n";
 
 const ProductListContainer = styled.View`

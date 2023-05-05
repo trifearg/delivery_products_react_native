@@ -177,7 +177,7 @@ export const Cart = ({ navigation }) => {
       >
         <Image source={backButton} />
       </CartBackButton>
-      <CartName>{i18n.t('cartScreen.cartName')}</CartName>
+      <CartName testID="cartName">{i18n.t('cartScreen.cartName')}</CartName>
       {products && products.length > 0 ? cartWithProducts : emptyCart}
     </CartContainer>
   );

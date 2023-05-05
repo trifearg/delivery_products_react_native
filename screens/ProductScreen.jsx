@@ -178,6 +178,7 @@ export const Product = ({ route, navigation }) => {
           <ProductDesription>{description}</ProductDesription>
         </ProductDesriptionContainer>
         <ProductAddToCart
+          testID="addToCartButton"
           onPress={() => {
             const checkItem = cartProducts.some(item => item.id === product.id)
             if (
