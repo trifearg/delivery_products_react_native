@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {API_URL} from "../../assets/environment";
 
 export const ordersApi = createApi({
   reducerPath: "ordersApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://192.168.0.101:3000/api/orders/",
+    baseUrl: API_URL + "api/orders/",
   }),
   endpoints: (builder) => ({
     createOrder: builder.mutation({

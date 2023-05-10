@@ -11,6 +11,7 @@ import {
 import { CartProductList } from "../components/cart/CartProductList";
 import i18n from "../assets/translations/i18n";
 import { useCreateOrderMutation } from "../redux/api/ordersApi";
+import {isIOS} from "../assets/environment";
 
 const CartContainer = styled.View`
   width: 100%;
@@ -22,7 +23,7 @@ const CartContainer = styled.View`
 const CartBackButton = styled.Pressable`
   position: absolute;
   left: 24px;
-  top: 34px;
+  top: ${props => isIOS ? '55px' : '36px'};
 `;
 
 const CartName = styled.Text`
@@ -31,7 +32,7 @@ const CartName = styled.Text`
   font-family: "DM-Sans-Medium";
   position: absolute;
   left: 96px;
-  top: 36px;
+  top: ${props => isIOS ? '55px' : '36px'};
 `;
 
 const CartEmptyContainer = styled.View`
@@ -172,7 +173,7 @@ export const Cart = ({ navigation }) => {
   return (
     <CartContainer>
       <CartBackButton
-        style={{ zIndex: 0.5 }}
+        style={{ zIndex: isIOS ? 1 : 0.5 }}
         onPress={() => navigation.navigate("Home")}
       >
         <Image source={backButton} />

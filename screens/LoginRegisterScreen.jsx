@@ -5,6 +5,7 @@ import i18n from "../assets/translations/i18n";
 import { useRegisterMutation, useLoginMutation } from "../redux/api/customersApi";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slices/userSlice";
+import {isIOS} from "../assets/environment";
 
 const MainContainer = styled.View`
   width: 100%;
@@ -16,7 +17,7 @@ const MainContainer = styled.View`
 const BackButton = styled.Pressable`
   position: absolute;
   left: 24px;
-  top: 34px;
+  top: ${props => isIOS ? '55px' : '36px'};
 `;
 
 const LoginRegisterImage = styled.Image`
@@ -119,7 +120,7 @@ export const LoginRegisterScreen = ({ navigation }) => {
   const [passwordError, setPasswordError] = useState(false);
   const [emailExistedError, setEmailExistedError] = useState(false);
 
-  const [ regiser, registeredUser ] = useRegisterMutation();
+  const [ register, registeredUser ] = useRegisterMutation();
   const [ login, authorizedUser ] = useLoginMutation();
 
   const dispatch = useDispatch();
@@ -247,14 +248,16 @@ export const LoginRegisterScreen = ({ navigation }) => {
             {passwordError && <InputTextError>{i18n.t("loginRegisterScreen.password.errorLogin")}</InputTextError>}
           </View>
           <SubmitButton onPress={() => {
+            console.log(loginOrRegister)
             if (loginOrRegister === 'register') {
-              regiser({
+              register({
                 name,
                 email,
                 password
               });
             }
             if (loginOrRegister === 'login') {
+              console.log(1)
               login({
                 email,
                 password
