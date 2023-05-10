@@ -7,6 +7,7 @@ import i18n from "../assets/translations/i18n";
 import { useGetUserOrdersQuery } from "../redux/api/ordersApi";
 import { useDispatch } from "react-redux";
 import { clearUser } from "../redux/slices/userSlice";
+import {isIOS} from "../assets/environment";
 
 const AccountContainer = styled.View`
   width: 100%;
@@ -18,12 +19,12 @@ const AccountContainer = styled.View`
 const AccountBackButton = styled.Pressable`
   position: absolute;
   left: 24px;
-  top: 34px;
+  top: ${props => isIOS ? '55px' : '36px'};
 `;
 
 const AccountLogoutButton = styled.Pressable`
   position: absolute;
-  top: 34px;
+  top: ${props => isIOS ? '55px' : '36px'};
   right: 24px;
   border: 1px solid black;
   border-radius: 10px;
@@ -43,11 +44,11 @@ const AccountName = styled.Text`
   font-family: "DM-Sans-Medium";
   position: absolute;
   left: 96px;
-  top: 36px;
+  top: ${props => isIOS ? '55px' : '36px'};
 `;
 
 const UserName = styled.Text`
-  margin-top: 95px;
+  margin-top: ${props => isIOS ? '114px' : '95px'};
   margin-left: 24px;
   font-size: 28px;
   line-height: 33px;

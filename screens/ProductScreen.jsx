@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
 import { addProduct, incrementProductCount } from "../redux/slices/cartSlice";
 import i18n from "../assets/translations/i18n";
+import {isIOS} from "../assets/environment";
 
 const ProductContainer = styled.ScrollView`
   width: 100%;
@@ -16,7 +17,7 @@ const ProductContainer = styled.ScrollView`
 const ProductBackButton = styled.Pressable`
   position: absolute;
   left: 24px;
-  top: 34px;
+  top: ${props => isIOS ? '55px' : '36px'};
 `;
 
 const ProductImage = styled.Image`
@@ -26,11 +27,10 @@ const ProductImage = styled.Image`
 `;
 
 const ProductBlock = styled.View`
-  height: 500px;
+  height: 90%;
   width: 100%;
   background: #ffffff;
   border-radius: 25px;
-  margin-top: 24px;
   padding: 24px;
 `;
 

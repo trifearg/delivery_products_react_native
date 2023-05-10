@@ -7,6 +7,8 @@ import { useGetProductsQuery } from "../redux/api/productsApi";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, incrementProductCount } from "../redux/slices/cartSlice";
 import i18n from "../assets/translations/i18n";
+import {Platform} from "react-native";
+import {isIOS} from "../assets/environment";
 
 const HomeContainer = styled.View`
   width: 100%;
@@ -22,7 +24,7 @@ const HeaderContainer = styled.View`
 
 const HeaderFirstBlock = styled.View`
   width: 100%;
-  padding-top: 36px;
+  padding-top:  ${props => isIOS ? '55px' : '36px'};
   padding-bottom: 8px;
   flex-direction: row;
   align-items: center;
